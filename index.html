@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Special Date ❤️</title>
 <style>
-/* Your existing CSS - no changes needed */
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Segoe UI,Arial,sans-serif;height:100vh;overflow:hidden;background:linear-gradient(135deg,#ffe4ec,#fff7fb);display:flex;align-items:center;justify-content:center}
 .card{width:min(900px,92vw);height:min(700px,90vh);background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-radius:35px;box-shadow:0 20px 60px rgba(255,0,100,.18);text-align:center;padding:40px;position:relative}
@@ -56,17 +55,29 @@ function moveNo() {
   if (noMoving) return;
   noMoving = true;
 
+  // Mobile-friendly: keep button in upper 70% of screen
+  const isMobile = window.innerWidth <= 768;
+  const maxVisibleY = isMobile ? window.innerHeight * 0.70 : window.innerHeight;
+  
   const noRect = no.getBoundingClientRect();
   const btnWidth = noRect.width;
   const btnHeight = noRect.height;
-  const padding = 60;
-  const maxX = window.innerWidth - btnWidth - padding;
-  const maxY = window.innerHeight - btnHeight - padding;
+  const padding = 80;
 
-  let x = Math.random() * maxX + padding/2;
-  let y = Math.random() * maxY + padding/2;
-  x = Math.max(padding/2, Math.min(x, maxX + padding/2));
-  y = Math.max(padding/2, Math.min(y, maxY + padding/2));
+  // Calculate safe boundaries
+  const maxX = window.innerWidth - btnWidth - padding;
+  const maxY = Math.min(maxVisibleY - btnHeight - padding, window.innerHeight - btnHeight - padding);
+
+  // Ensure positive bounds
+  const safeMaxX = Math.max(padding, maxX);
+  const safeMaxY = Math.max(padding, maxY);
+
+  let x = Math.random() * safeMaxX + padding/2;
+  let y = Math.random() * safeMaxY + padding/2;
+
+  // Clamp to ensure button never goes off screen
+  x = Math.max(padding/2, Math.min(x, safeMaxX + padding/2));
+  y = Math.max(padding/2, Math.min(y, safeMaxY + padding/2));
 
   no.style.position = "fixed";
   no.style.left = `${x}px`;
@@ -74,7 +85,6 @@ function moveNo() {
   no.style.zIndex = "10000";
   no.style.display = "block";
 
-  // Increased from 0.08 to 0.15 for more growth
   grow += 0.15;
   yes.style.transform = `scale(${grow})`;
   yes.style.transition = "transform 0.2s ease";
