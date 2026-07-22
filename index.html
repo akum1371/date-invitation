@@ -32,27 +32,30 @@ position:relative;
 h1{margin:18px 0;color:#ff4d6d;font-size:3.5rem}
 p{font-size:2rem;color:#5d1830}
 button{
-position:fixed;
+button{
+position:absolute;
 padding:18px 42px;
 border:none;
 border-radius:999px;
-font-size:1.4rem;
+font-size:1.3rem;
 font-weight:bold;
 cursor:pointer;
 transition:.25s;
 }
+}
 #yesBtn{
-left:34%;
-top:72%;
+left:28%;
+bottom:40px;
 background:#ff4d6d;
-color:#fff;
-box-shadow:0 0 30px rgba(255,0,90,.45);
+color:white;
+}
 }
 #noBtn{
-left:58%;
-top:72%;
+left:56%;
+bottom:40px;
 background:#9dc8f7;
 color:#14385c;
+}
 }
 #success{
 display:none;
@@ -174,9 +177,16 @@ button{
 <div id="bg"></div>
 
 <div class="card" id="card">
+
 <div class="icon">💌</div>
+
 <h1>HEY DHAKKAAN 🤪</h1>
+
 <p>Will you go out on a date with me<br><b>on August 2nd?</b> ✨</p>
+
+<button id="yesBtn">YES! 💖</button>
+<button id="noBtn">No 😅</button>
+
 </div>
 
 <button id="yesBtn">YES! 💖</button>
@@ -196,22 +206,16 @@ let grow=1;
 
 function moveNo(){
 
-no.style.position="fixed";
+    no.style.position="fixed";
 
-const pad=20;
+    const maxX = window.innerWidth - no.offsetWidth;
+    const maxY = window.innerHeight - no.offsetHeight;
 
-const x=Math.random()*(window.innerWidth-no.offsetWidth-pad);
+    no.style.left = Math.random()*maxX + "px";
+    no.style.top  = Math.random()*maxY + "px";
 
-const y=Math.random()*(window.innerHeight-no.offsetHeight-pad);
-
-no.style.left=x+"px";
-
-no.style.top=y+"px";
-
-grow+=0.08;
-
-yes.style.transform=`scale(${grow})`;
-
+    grow += 0.08;
+    yes.style.transform = `scale(${grow})`;
 }
 }
 
